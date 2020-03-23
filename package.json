@@ -24,7 +24,7 @@
     "envalid": "^4.2.2",
     "express": "^4.16.4",
     "moment": "^2.24.0",
-    "mongoose": "^4.13.2",
+    "mongoose": "^5.7.5",
     "pino": "^5.15.0",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
