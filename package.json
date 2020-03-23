@@ -1,0 +1,48 @@
+{
+  "name": "cityatoms-service",
+  "version": "1.0.0",
+  "description": "API for cityatoms",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "./node_modules/.bin/_mocha test/**/*_test.js",
+    "watch": "nodemon -e js,jade --exec \"mocha -R min\" ./node_modules/.bin/_mocha test/**/*_test.js",
+    "dredd": "./node_modules/.bin/dredd",
+    "dredd-watch": "nodemon -e js,yaml,yml --exec ./node_modules/.bin/dredd",
+    "dev": "nodemon --inspect=9229 -e js,jade --exec node index.js"
+  },
+  "author": "Raphael Salvador <raphael.salvador@vaitrade.de>",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dynk/cityatoms-service"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "clean-deep": "^3.0.2",
+    "dotenv": "^6.2.0",
+    "envalid": "^4.2.2",
+    "express": "^4.16.4",
+    "moment": "^2.24.0",
+    "mongoose": "^4.13.2",
+    "pino": "^5.15.0",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4",
+    "swagger-express-mw": "^0.7.0"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-http": "^3.0.0",
+    "dredd": "^11.1.4",
+    "eslint": "^4.5.0",
+    "eslint-config-airbnb-base": "^11.3.2",
+    "eslint-plugin-import": "^2.7.0",
+    "hooks": "^0.3.2",
+    "mocha": "^5.2.0",
+    "nodemon": "^1.18.10",
+    "should": "^13.2.3",
+    "supertest": "^3.0.0",
+    "xlsx": "^0.14.2",
+    "yamljs": "^0.3.0"
+  }
+}

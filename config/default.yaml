@@ -1,0 +1,30 @@
+swagger:
+
+  fittingsDirs: [ api/common ]
+  defaultPipe: null
+  swaggerControllerPipe: swagger_controllers  # defines the standard processing pipe for controllers
+
+  bagpipes:
+    swagger_router:
+      name: swagger_router
+      mockMode: false
+      mockControllersDirs: [ api/mocks ]
+      controllersDirs: [ api/controllers ]
+
+    _swagger_validate:
+      name: swagger_validator
+      validateResponse: false
+
+    # pipe for all swagger-node controllers
+    swagger_controllers:
+      - onError: ErrorHandler
+      - cors
+      - swagger_security
+      - swagger_params_parser
+      - _swagger_validate
+      - express_compatibility
+      - swagger_router
+
+    # pipe to serve swagger (endpoint is in swagger.yaml)
+    swagger_raw:
+      name: swagger_raw

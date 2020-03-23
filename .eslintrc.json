@@ -1,0 +1,56 @@
+{
+    "extends": "airbnb-base",
+    "parserOptions": {
+      "sourceType": "module",
+      "allowImportExportEverywhere": false
+    },
+    "env": {
+      "node": true,
+      "mocha": true
+    },
+    "rules": {
+      "jsx-quotes": [
+        "error",
+        "prefer-double"
+      ],
+      "semi": [
+        "error",
+        "never"
+      ],
+      "no-console": [
+        "warn"
+      ],
+      "func-names": "off",
+      "no-var": "error",
+      "no-alert": "error",
+      "no-eval": "error",
+      "no-extra-bind": "warn",
+      "no-trailing-spaces": "error",
+      "eol-last": "error",
+      "no-throw-literal": "off",
+      "camelcase": "off",
+      "no-underscore-dangle": 0,
+      "class-methods-use-this": [
+        "off"
+      ],
+      "no-use-before-define": [
+        "error",
+        {
+          "functions": false,
+          "classes": false
+        }
+      ],
+      "arrow-parens": [
+        "error",
+        "as-needed",
+        {
+          "requireForBlockBody": false
+        }
+      ],
+      "no-param-reassign": [
+        "error",
+        {"props": false}
+      ]
+    }
+  }
+  
