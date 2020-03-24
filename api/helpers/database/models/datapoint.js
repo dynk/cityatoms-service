@@ -2,6 +2,19 @@ const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema
 
+const pointSchema = new mongoose.Schema({
+  type: {
+    type: String,
+    default: 'Point',
+    required: true,
+  },
+  coordinates: {
+    type: [Number],
+    index: '2dsphere',
+    required: true,
+  },
+})
+
 const DatapointSchema = new Schema({
   user_id: {
     type: Schema.Types.ObjectId,
@@ -14,6 +27,7 @@ const DatapointSchema = new Schema({
   date: {
     type: Date,
   },
+  location: pointSchema,
   latitude: {
     type: Number,
     required: true,

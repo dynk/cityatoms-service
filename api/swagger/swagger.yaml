@@ -283,6 +283,48 @@ paths:
           description: Authentication error
           schema:
             $ref: "#/definitions/error"
+  /backoffice/datapoints:
+    x-swagger-router-controller: backoffice
+    get:
+      description: get datapoints
+      security:
+        - BackofficeAuthToken: []
+      operationId: backofficeGetDatapoints
+      parameters:
+        - name: latitude
+          in: query
+          type: number
+          required: true
+          x-example: '20'
+        - name: longitude
+          in: query
+          type: number
+          required: true
+          x-example: '20'
+        - name: radius
+          in: query
+          type: number
+          x-example: '20'
+        - name: discret_time
+          in: query
+          type: number
+          required: true
+          x-example: '1215'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/datapoint"
+        '400':
+          description: Validation errors
+          schema:
+            $ref: '#/definitions/validationError'
+        '403':
+          description: Authentication error
+          schema:
+            $ref: "#/definitions/error"
             
  
 definitions:
