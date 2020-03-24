@@ -34,7 +34,7 @@ module.exports = {
     mongoose.Promise = global.Promise
     return Promise.all([
       linkSwagger(),
-      mongoose.connect(config.MONGO_URI, options).then(() => logger.info(`Connected to database: ${config.MONGO_URI}`)),
+      mongoose.connect(`mongodb://${config.MONGO_URI}/cityatoms_service`, options).then(() => logger.info(`Connected to database: ${config.MONGO_URI}`)),
     ]).then(t => t[0])
   },
   end: () => {

@@ -1,0 +1,20 @@
+version: "2"
+services:
+  app:
+    container_name: cityatoms-server
+    restart: always
+    build: .
+    environment:
+      - MONGO_URI=${MONGODB_URI}
+    ports:
+      - "3000:3000"
+    links:
+      - mongo
+  mongo:
+    container_name: cityatoms-db
+    image: mongo:3.5
+    command: mongod --port 27017 --bind_ip_all 
+    volumes:
+      - /tmp:/tmp
+    ports:
+      - "27017:27017"
