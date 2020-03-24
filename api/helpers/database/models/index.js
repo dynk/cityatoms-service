@@ -1,4 +1,5 @@
 const user = require('./user')
+const datapoint = require('./datapoint')
 
 
-module.exports = { user }
+module.exports = { user, datapoint }
