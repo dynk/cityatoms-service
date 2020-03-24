@@ -21,7 +21,7 @@ securityDefinitions:
   AuthToken:
     type: apiKey
     in: header
-    name: x-cityatom-auth-token
+    name: x-auth-token
 
 security:
   - BackofficeAuthToken: []
