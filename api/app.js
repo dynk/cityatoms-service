@@ -1,13 +1,18 @@
 const SwaggerExpress = require('swagger-express-mw')
 const App = require('express')
+const mongoose = require('mongoose')
+const config = require('./common/config')
+const logger = require('./common/logger')
+require('./helpers/database/models')
+const SecurityHandlers = require('./security')
 
-const logger = console
 const app = App()
 
 const linkSwagger = () => new Promise((accept, reject) => {
   const appConfig = {
     appRoot: `${__dirname}/../`,
-    dependencies: { },
+    swaggerSecurityHandlers: SecurityHandlers(),
+    dependencies: { mongoose },
   }
   SwaggerExpress.create(appConfig, (err, swaggerExpress) => {
     if (err) {
@@ -23,10 +28,19 @@ const linkSwagger = () => new Promise((accept, reject) => {
 module.exports = {
   app,
   start: async () => {
+    const options = {
+      useMongoClient: true,
+    }
+    mongoose.Promise = global.Promise
     return Promise.all([
       linkSwagger(),
+      mongoose.connect(config.MONGO_URI, options).then(() => logger.info(`Connected to database: ${config.MONGO_URI}`)),
     ]).then(t => t[0])
   },
   end: () => {
+    mongoose.models = {}
+    mongoose.modelSchemas = {}
+    return mongoose.disconnect()
   },
 }
+

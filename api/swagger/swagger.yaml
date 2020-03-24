@@ -17,11 +17,11 @@ securityDefinitions:
   BackofficeAuthToken:
     type: apiKey
     in: header
-    name: backoffice-auth-token
+    name: x-backoffice-auth-token
   AuthToken:
     type: apiKey
     in: header
-    name: auth-token
+    name: x-cityatom-auth-token
 
 security:
   - BackofficeAuthToken: []
@@ -145,6 +145,7 @@ paths:
           description: Authentication error
           schema:
             $ref: "#/definitions/error"
+
   /backoffice/users:
     x-swagger-router-controller: backoffice
     post:
@@ -158,7 +159,7 @@ paths:
           schema:
             $ref: "#/definitions/userRequestBody"
       responses:
-        '200':
+        '201':
           description: OK
           schema:
             $ref: "#/definitions/userResponse"
@@ -268,7 +269,7 @@ definitions:
   user:
     type: object
     properties:
-      name:
+      first_name:
         type: string
         example: 'John'
       last_name:
@@ -289,7 +290,7 @@ definitions:
     allOf:
       - $ref: "#/definitions/user"
     required:
-      - name
+      - first_name
       - last_name
       - email
       - password

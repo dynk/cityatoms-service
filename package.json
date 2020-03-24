@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "body-parser": "^1.18.3",
+    "bcryptjs": "^2.4.3",
     "clean-deep": "^3.0.2",
     "dotenv": "^6.2.0",
     "envalid": "^4.2.2",
