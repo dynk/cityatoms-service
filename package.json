@@ -18,14 +18,15 @@
     "url": "https://github.com/dynk/cityatoms-service"
   },
   "dependencies": {
-    "body-parser": "^1.18.3",
     "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
     "clean-deep": "^3.0.2",
     "dotenv": "^6.2.0",
     "envalid": "^4.2.2",
     "express": "^4.16.4",
+    "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",
-    "mongoose": "^4.13.2",
+    "mongoose": "^5.9.6",
     "pino": "^5.15.0",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",

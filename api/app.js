@@ -29,12 +29,16 @@ module.exports = {
   app,
   start: async () => {
     const options = {
-      useMongoClient: true,
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 5000,
     }
     mongoose.Promise = global.Promise
     return Promise.all([
       linkSwagger(),
-      mongoose.connect(`mongodb://${config.MONGO_URI}/cityatoms_service`, options).then(() => logger.info(`Connected to database: ${config.MONGO_URI}`)),
+      mongoose.connect(config.MONGO_URI, options)
+        .then(() => logger.info(`Connected to database: ${config.MONGO_URI}`))
+        .catch(e => logger.error('Error connecting to database!', e)),
     ]).then(t => t[0])
   },
   end: () => {
@@ -43,4 +47,3 @@ module.exports = {
     return mongoose.disconnect()
   },
 }
-

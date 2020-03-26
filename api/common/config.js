@@ -5,6 +5,7 @@ const config = cleanEnv(process.env, {
   AUTH_TOKEN: str(),
   BACKOFFICE_AUTH_TOKEN: str(),
   MONGO_URI: str(),
+  JWT_SECRET: str(),
 }, { strict: true })
 
 Object.assign(process.env, config)

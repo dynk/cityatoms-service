@@ -14,9 +14,21 @@ module.exports = ({ mongoose }) => {
     },
     meGet: async (req, res, next) => {
       try {
-        const _id = req.swagger.params.userId.value
-        const user = await UserModel.findOne({ _id })
+        const token = req.swagger.params['x-auth-token'].value
+        const user = await UserModel.findByToken(token)
+        // const user = await UserModel.findByToken({ _id })
         res.status(200).json(user.toJSON())
+        next()
+      } catch (e) {
+        next(e)
+      }
+    },
+    meLogin: async (req, res, next) => {
+      try {
+        const { email, password } = req.swagger.params.body.value
+        const user = await UserModel.findByCredentials(email, password)
+        const token = await user.generateAuthToken()
+        res.status(200).json({ token, user })
         next()
       } catch (e) {
         next(e)
