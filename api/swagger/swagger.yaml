@@ -94,7 +94,7 @@ paths:
         - name: body
           in: body
           schema:
-            $ref: "#/definitions/userLogin"
+            $ref: "#/definitions/userRequestBody"
       responses:
         '200':
           description: OK
@@ -119,7 +119,7 @@ paths:
         - name: body
           in: body
           schema:
-            $ref: "#/definitions/userRequestBody"
+            $ref: "#/definitions/userLogin"
       responses:
         '200':
           description: OK
