@@ -43,13 +43,12 @@ module.exports = ({ mongoose }) => {
     },
     backofficePostDatapoint: async (req, res, next) => {
       try {
-        const user_id = req.swagger.params.userId.value
         const body = req.swagger.params.body.value
         const location = {
           type: 'Point',
           coordinates: [body.lat, body.lon],
         }
-        const datapoint = await DatapointModel.create({ user_id, ...body, location })
+        const datapoint = await DatapointModel.create({ ...body, location })
         res.status(201).json(datapoint.toJSON())
         next()
       } catch (e) {
