@@ -61,18 +61,23 @@ module.exports = ({ mongoose }) => {
         const lon = parseFloat(req.swagger.params.lon.value)
         const radius = parseFloat(req.swagger.params.radius.value)
         const time = req.swagger.params.time.value
-        const datapoints = await DatapointModel.aggregate([
-          {
-            $geoNear: {
-              near: { type: 'Point', coordinates: [lat, lon] },
-              distanceField: 'dist.calculated',
-              maxDistance: radius,
-              query: { time },
-              includeLocs: 'dist.location',
-              spherical: true,
+        let datapoints
+        if (lat && lon && radius) {
+          datapoints = await DatapointModel.aggregate([
+            {
+              $geoNear: {
+                near: { type: 'Point', coordinates: [lat, lon] },
+                distanceField: 'dist.calculated',
+                maxDistance: radius,
+                query: { time },
+                includeLocs: 'dist.location',
+                spherical: true,
+              },
             },
-          },
-        ])
+          ])
+        } else {
+          datapoints = await DatapointModel.find({})
+        }
         res.status(200).json(datapoints)
         next()
       } catch (e) {
