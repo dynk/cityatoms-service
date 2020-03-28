@@ -1,3 +1,5 @@
+const moment = require('moment')
+
 module.exports = ({ mongoose }) => {
   const UserModel = mongoose.model('user')
   const DatapointModel = mongoose.model('datapoint')
@@ -60,16 +62,22 @@ module.exports = ({ mongoose }) => {
         const lat = parseFloat(req.swagger.params.lat.value)
         const lon = parseFloat(req.swagger.params.lon.value)
         const radius = parseFloat(req.swagger.params.radius.value)
-        const time = req.swagger.params.time.value
+        const rawTime = req.swagger.params.time.value
         let datapoints
         if (lat && lon && radius) {
+          const afterTime = moment(rawTime).add(5, 'day').toISOString()
+          const beforeTime = moment(rawTime).toISOString()
           datapoints = await DatapointModel.aggregate([
             {
               $geoNear: {
                 near: { type: 'Point', coordinates: [lat, lon] },
                 distanceField: 'dist.calculated',
                 maxDistance: radius,
-                query: { time },
+                // query: { time: {
+                //   $gte: beforeTime,
+                //   $lte: afterTime,
+                // },
+                // },
                 includeLocs: 'dist.location',
                 spherical: true,
               },
