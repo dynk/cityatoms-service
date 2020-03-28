@@ -16,23 +16,19 @@ const pointSchema = new mongoose.Schema({
 })
 
 const DatapointSchema = new Schema({
-  user_id: {
-    type: Schema.Types.ObjectId,
-    ref: 'user',
+  imei: {
+    type: String,
     required: true,
   },
-  discret_time: {
-    type: Number,
-  },
-  date: {
+  time: {
     type: Date,
   },
   location: pointSchema,
-  latitude: {
+  lat: {
     type: Number,
     required: true,
   },
-  longitude: {
+  lon: {
     type: Number,
     required: true,
   },
@@ -59,6 +55,9 @@ const DatapointSchema = new Schema({
       type: Number,
     },
     hospital: {
+      type: Number,
+    },
+    score: {
       type: Number,
     },
   },

@@ -47,7 +47,7 @@ module.exports = ({ mongoose }) => {
         const body = req.swagger.params.body.value
         const location = {
           type: 'Point',
-          coordinates: [body.latitude, body.longitude],
+          coordinates: [body.lat, body.lon],
         }
         const datapoint = await DatapointModel.create({ user_id, ...body, location })
         res.status(201).json(datapoint.toJSON())
@@ -58,17 +58,17 @@ module.exports = ({ mongoose }) => {
     },
     backofficeGetDatapoints: async (req, res, next) => {
       try {
-        const latitude = parseFloat(req.swagger.params.latitude.value)
-        const longitude = parseFloat(req.swagger.params.longitude.value)
+        const lat = parseFloat(req.swagger.params.lat.value)
+        const lon = parseFloat(req.swagger.params.lon.value)
         const radius = parseFloat(req.swagger.params.radius.value)
-        const discret_time = req.swagger.params.discret_time.value
+        const time = req.swagger.params.time.value
         const datapoints = await DatapointModel.aggregate([
           {
             $geoNear: {
-              near: { type: 'Point', coordinates: [latitude, longitude] },
+              near: { type: 'Point', coordinates: [lat, lon] },
               distanceField: 'dist.calculated',
               maxDistance: radius,
-              query: { discret_time },
+              query: { time },
               includeLocs: 'dist.location',
               spherical: true,
             },

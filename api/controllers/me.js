@@ -24,8 +24,8 @@ module.exports = ({ mongoose }) => {
     },
     meLogin: async (req, res, next) => {
       try {
-        const { email, password } = req.swagger.params.body.value
-        const user = await UserModel.findByCredentials(email, password)
+        const { imei, password } = req.swagger.params.body.value
+        const user = await UserModel.findByCredentials(imei, password)
         const token = await user.generateAuthToken()
         res.status(200).json({ token, user })
         next()
@@ -48,9 +48,9 @@ module.exports = ({ mongoose }) => {
     mePostDatapoint: async (req, res, next) => {
       try {
         const token = req.swagger.params['x-auth-token'].value
-        const { _id: user_id } = await UserModel.findByToken(token)
+        const { imei } = await UserModel.findByToken(token)
         const body = req.swagger.params.body.value
-        const datapoint = await DatapointModel.create({ user_id, ...body })
+        const datapoint = await DatapointModel.create({ imei: imei || body.imei, ...body })
         res.status(201).json(datapoint.toJSON())
         next()
       } catch (e) {
@@ -60,8 +60,8 @@ module.exports = ({ mongoose }) => {
     meGetDatapoints: async (req, res, next) => {
       try {
         const token = req.swagger.params['x-auth-token'].value
-        const { _id: user_id } = await UserModel.findByToken(token)
-        const datapoints = await DatapointModel.find({ user_id })
+        const { imei } = await UserModel.findByToken(token)
+        const datapoints = await DatapointModel.find({ imei })
         res.status(201).json(datapoints.map(d => d.toJSON()))
         next()
       } catch (e) {

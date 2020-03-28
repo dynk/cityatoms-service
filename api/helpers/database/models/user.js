@@ -6,7 +6,7 @@ const config = require('../../../common/config')
 const Schema = mongoose.Schema
 
 const UserSchema = new Schema({
-  email: {
+  imei: {
     type: String,
     unique: true,
     required: true,
@@ -22,12 +22,10 @@ const UserSchema = new Schema({
   },
   first_name: {
     type: String,
-    required: true,
     lowercase: true,
   },
   last_name: {
     type: String,
-    required: true,
     lowercase: true,
   },
   country_code: {
@@ -100,9 +98,9 @@ UserSchema.pre('save', function (next) {
   }
 })
 
-UserSchema.statics.findByCredentials = function (email, password) {
+UserSchema.statics.findByCredentials = function (imei, password) {
   const User = this
-  return User.findOne({ email }).then(user => {
+  return User.findOne({ imei }).then(user => {
     if (!user) {
       return Promise.reject()
     }
