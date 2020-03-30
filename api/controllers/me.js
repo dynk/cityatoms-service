@@ -1,3 +1,13 @@
+const moment = require('moment')
+
+const buildQuery = ({ imei, time }) => ({
+  ...(time ? {
+    time: {
+      $gt: moment(time).subtract(5, 'minute').toDate(),
+      $lt: moment(time).add(5, 'minute').toDate(),
+    } } : null),
+  imei,
+})
 module.exports = ({ mongoose }) => {
   const UserModel = mongoose.model('user')
   const DatapointModel = mongoose.model('datapoint')
@@ -61,8 +71,29 @@ module.exports = ({ mongoose }) => {
       try {
         const token = req.swagger.params['x-auth-token'].value
         const { imei } = await UserModel.findByToken(token)
-        const datapoints = await DatapointModel.find({ imei })
-        res.status(201).json(datapoints.map(d => d.toJSON()))
+        const lat = parseFloat(req.swagger.params.lat.value)
+        const lon = parseFloat(req.swagger.params.lon.value)
+        const radius = parseFloat(req.swagger.params.radius.value)
+        const time = req.swagger.params.time.value
+        const query = buildQuery({ time, imei })
+        let datapoints
+        if (lat && lon) {
+          datapoints = await DatapointModel.aggregate([
+            {
+              $geoNear: {
+                near: { type: 'Point', coordinates: [lat, lon] },
+                distanceField: 'dist.calculated',
+                maxDistance: radius || 30,
+                query,
+                includeLocs: 'dist.location',
+                spherical: true,
+              },
+            },
+          ])
+        } else {
+          datapoints = await DatapointModel.find(query)
+        }
+        res.status(200).json(datapoints)
         next()
       } catch (e) {
         next(e)

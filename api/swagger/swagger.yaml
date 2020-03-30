@@ -145,6 +145,22 @@ paths:
           name: x-auth-token
           type: string
           required: true
+        - name: lat
+          in: query
+          type: string
+          x-example: '20'
+        - name: lon
+          in: query
+          type: string
+          x-example: '20'
+        - name: radius
+          in: query
+          type: string
+          x-example: '20'
+        - name: time
+          in: query
+          type: string
+          x-example: '2019-05-07T15:37:08.300Z'
       responses:
         '200':
           description: OK
