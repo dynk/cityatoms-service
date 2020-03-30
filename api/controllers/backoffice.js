@@ -65,19 +65,20 @@ module.exports = ({ mongoose }) => {
         const rawTime = req.swagger.params.time.value
         let datapoints
         if (lat && lon && radius) {
-          const afterTime = moment(rawTime).add(5, 'day').toISOString()
-          const beforeTime = moment(rawTime).toISOString()
+          const afterTime = moment(rawTime).add(5, 'minute').toDate()
+          const beforeTime = moment(rawTime).subtract(5, 'minute').toDate()
           datapoints = await DatapointModel.aggregate([
             {
               $geoNear: {
                 near: { type: 'Point', coordinates: [lat, lon] },
                 distanceField: 'dist.calculated',
                 maxDistance: radius,
-                // query: { time: {
-                //   $gte: beforeTime,
-                //   $lte: afterTime,
-                // },
-                // },
+                query: {
+                  time: {
+                    $gt: beforeTime,
+                    $lt: afterTime,
+                  },
+                },
                 includeLocs: 'dist.location',
                 spherical: true,
               },

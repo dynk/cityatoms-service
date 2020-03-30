@@ -21,7 +21,12 @@ const DatapointSchema = new Schema({
     required: true,
   },
   time: {
-    type: Date,
+    type: Schema.Types.Date,
+    default: null,
+  },
+  created_at: {
+    type: Schema.Types.Date,
+    default: null,
   },
   location: pointSchema,
   lat: {
@@ -61,6 +66,9 @@ const DatapointSchema = new Schema({
       type: Number,
     },
   },
+},
+{
+  timestamps: { createdAt: 'created_at' },
 })
 
 DatapointSchema.set('toJSON', {

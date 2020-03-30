@@ -3,10 +3,11 @@
 require('../../../api/common/dot-env.js')
 const should = require('should')
 const request = require('supertest')
-const { start } = require('../../../api/app')
+const { start, end } = require('../../../api/app')
 
 let app
 before(() => start().then(a => { app = a }))
+after(() => end())
 
 const BACKOFFICE_HEADER = 'x-backoffice-auth-token'
 const BACKOFFICE_TOKEN = 'test'
@@ -14,6 +15,7 @@ const defaultDatapoint = {
   imei: '11111',
   lat: 20,
   lon: 20,
+  time: '2019-05-07T15:22:08.300Z',
   symptom_scores: {
     cough: 1,
   },
@@ -61,7 +63,7 @@ describe('Backoffice', function () {
         })
     })
 
-    it.only('it should post datapoint', function (done) {
+    it('it should post datapoint', function (done) {
       request(app)
         .post('/api/v1/backoffice/datapoints')
         .set('Accept', 'application/json')

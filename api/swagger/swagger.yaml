@@ -412,8 +412,7 @@ definitions:
     type: object
     properties:
       time:
-        type: string
-        example: '2020-01-01'
+        $ref: "#/definitions/date" 
       lat:
         type: number
         example: 45.123123
@@ -463,6 +462,7 @@ definitions:
     required:
       - lat
       - lon
+      - time
       - imei
 
   countryCode:
