@@ -1,5 +1,13 @@
 const moment = require('moment')
 
+const buildQuery = ({ imei, time }) => ({
+  ...(time ? {
+    time: {
+      $gt: moment(time).subtract(5, 'minute').toDate(),
+      $lt: moment(time).add(5, 'minute').toDate(),
+    } } : null),
+  ...(imei ? { imei } : null),
+})
 module.exports = ({ mongoose }) => {
   const UserModel = mongoose.model('user')
   const DatapointModel = mongoose.model('datapoint')
@@ -62,30 +70,25 @@ module.exports = ({ mongoose }) => {
         const lat = parseFloat(req.swagger.params.lat.value)
         const lon = parseFloat(req.swagger.params.lon.value)
         const radius = parseFloat(req.swagger.params.radius.value)
-        const rawTime = req.swagger.params.time.value
+        const time = req.swagger.params.time.value
+        const imei = req.swagger.params.imei.value
+        const query = buildQuery({ time, imei })
         let datapoints
-        if (lat && lon && radius) {
-          const afterTime = moment(rawTime).add(5, 'minute').toDate()
-          const beforeTime = moment(rawTime).subtract(5, 'minute').toDate()
+        if (lat && lon) {
           datapoints = await DatapointModel.aggregate([
             {
               $geoNear: {
                 near: { type: 'Point', coordinates: [lat, lon] },
                 distanceField: 'dist.calculated',
-                maxDistance: radius,
-                query: {
-                  time: {
-                    $gt: beforeTime,
-                    $lt: afterTime,
-                  },
-                },
+                maxDistance: radius || 30,
+                query,
                 includeLocs: 'dist.location',
                 spherical: true,
               },
             },
           ])
         } else {
-          datapoints = await DatapointModel.find({})
+          datapoints = await DatapointModel.find(query)
         }
         res.status(200).json(datapoints)
         next()

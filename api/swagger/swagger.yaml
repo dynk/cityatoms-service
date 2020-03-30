@@ -316,7 +316,11 @@ paths:
         - name: time
           in: query
           type: string
-          x-example: '1215'
+          x-example: '2019-05-07T15:37:08.300Z'
+        - name: imei
+          in: query
+          type: string
+          x-example: '123123131321'
       responses:
         '200':
           description: OK
