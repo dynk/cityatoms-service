@@ -98,7 +98,7 @@ paths:
         '200':
           description: OK
           schema:
-            $ref: "#/definitions/userResponse"
+            $ref: "#/definitions/loginToken"
         '400':
           description: Validation errors
           schema:
@@ -384,6 +384,12 @@ definitions:
       password:
         type: string
         example: 'strongPassord'     
+  loginToken:
+    type: object
+    properties:
+      token:
+        type: string
+        example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTgyMTY4YjlkYjBkYTEyYmRiOTQxMGQiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg1NTkzMzQ1fQ.RM7UvjXzeW40oAHeygdRn6qBDvWgFcdUGyNiKOKz0Ow'
 
   userRequestBody:
     type: object

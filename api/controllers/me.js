@@ -27,7 +27,7 @@ module.exports = ({ mongoose }) => {
         const { imei, password } = req.swagger.params.body.value
         const user = await UserModel.findByCredentials(imei, password)
         const token = await user.generateAuthToken()
-        res.status(200).json({ token, user })
+        res.status(200).json({ token })
         next()
       } catch (e) {
         next(e)
