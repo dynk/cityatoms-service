@@ -463,7 +463,7 @@ definitions:
     required:
       - lat
       - lon
-      - symptom_scores
+      - imei
 
   countryCode:
     type: string
