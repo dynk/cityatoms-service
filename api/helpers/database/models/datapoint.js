@@ -24,6 +24,9 @@ const DatapointSchema = new Schema({
     type: Schema.Types.Date,
     default: null,
   },
+  time_utc: {
+    type: Number,
+  },
   created_at: {
     type: Schema.Types.Date,
     default: null,

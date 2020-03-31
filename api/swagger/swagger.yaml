@@ -432,7 +432,10 @@ definitions:
     type: object
     properties:
       time:
-        $ref: "#/definitions/date" 
+        $ref: "#/definitions/date"
+      time_utc:
+        type: number
+        example: 1231231231321
       lat:
         type: number
         example: 45.123123
