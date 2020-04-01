@@ -67,6 +67,18 @@ module.exports = ({ mongoose }) => {
         next(e)
       }
     },
+    meBatchPostDatapoint: async (req, res, next) => {
+      try {
+        const token = req.swagger.params['x-auth-token'].value
+        const { imei } = await UserModel.findByToken(token)
+        const new_datapoints = req.swagger.params.body.value
+        const datapoint = await DatapointModel.insertMany(new_datapoints.map(d => ({ ...d, imei })))
+        res.status(201).json(datapoint.map(d => d.toJSON()))
+        next()
+      } catch (e) {
+        next(e)
+      }
+    },
     meGetDatapoints: async (req, res, next) => {
       try {
         const token = req.swagger.params['x-auth-token'].value

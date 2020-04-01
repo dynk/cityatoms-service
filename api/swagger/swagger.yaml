@@ -95,7 +95,7 @@ paths:
           schema:
             $ref: "#/definitions/userRequestBody"
       responses:
-        '200':
+        '201':
           description: OK
           schema:
             $ref: "#/definitions/loginToken"
@@ -177,7 +177,7 @@ paths:
           schema:
             $ref: "#/definitions/error"
     post:
-      description: Get datapoints by user
+      description: Post datapoints by user
       security:
         - AuthToken: []
       operationId: mePostDatapoint
@@ -191,10 +191,35 @@ paths:
           schema:
             $ref: "#/definitions/datapointRequestBody"
       responses:
-        '200':
+        '201':
           description: OK
+        '400':
+          description: Validation errors
           schema:
-            $ref: "#/definitions/userResponse"
+            $ref: '#/definitions/validationError'
+        '403':
+          description: Authentication error
+          schema:
+            $ref: "#/definitions/error"
+  /me/batch/datapoints:
+    x-swagger-router-controller: me
+    post:
+      description: Batch post datapoints by user
+      security:
+        - AuthToken: []
+      operationId: meBatchPostDatapoint
+      parameters:
+        - in: header
+          name: x-auth-token
+          type: string
+          required: true
+        - name: body
+          in: body
+          schema:
+            $ref: "#/definitions/datapointBatchRequestBody"
+      responses:
+        '201':
+          description: OK
         '400':
           description: Validation errors
           schema:
@@ -363,10 +388,8 @@ paths:
           schema:
             $ref: "#/definitions/datapointRequestBody"
       responses:
-        '200':
+        '201':
           description: OK
-          schema:
-            $ref: "#/definitions/userResponse"
         '400':
           description: Validation errors
           schema:
@@ -487,6 +510,11 @@ definitions:
       - lon
       - time
       - imei
+  
+  datapointBatchRequestBody:
+    type: array
+    items:
+      $ref: "#/definitions/datapoint"
 
   countryCode:
     type: string
