@@ -1,15 +1,6 @@
 const util = require('util')
 const logger = require('./logger')
 
-const idDict = 'abcdefghijklmnopqrstuvwxyz0123456789'
-
-function createId() {
-  let text = ''
-  for (let i = 0; i < 10; i += 1) {
-    text += idDict.charAt(Math.floor(Math.random() * idDict.length))
-  }
-  return text
-}
 
 module.exports = function create() {
   return (context, next) => {
@@ -31,7 +22,7 @@ module.exports = function create() {
     delete context.error
     context.headers['Content-Type'] = 'application/json'
 
-    err.ref = createId()
+    err.ref = err.message
     logger.error(Object.assign(err,
       { Method: context.request.method, Url: context.request.originalUrl }))
 

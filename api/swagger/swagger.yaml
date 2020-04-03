@@ -42,6 +42,7 @@ paths:
             $ref: "#/definitions/userRequestBody"
         - in: header
           name: x-auth-token
+          description: instance_id
           type: string
           required: true
       responses:
@@ -65,6 +66,7 @@ paths:
       parameters:
         - in: header
           name: x-auth-token
+          description: instance_id
           type: string
           required: true
         - name: body
@@ -98,31 +100,6 @@ paths:
         '201':
           description: OK
           schema:
-            $ref: "#/definitions/loginToken"
-        '400':
-          description: Validation errors
-          schema:
-            $ref: '#/definitions/validationError'
-        '403':
-          description: Authentication error
-          schema:
-            $ref: "#/definitions/error"
-  /me/login:
-    x-swagger-router-controller: me
-    post:
-      description: Login
-      security:
-        - AuthToken: []
-      operationId: meLogin
-      parameters:
-        - name: body
-          in: body
-          schema:
-            $ref: "#/definitions/userLogin"
-      responses:
-        '200':
-          description: OK
-          schema:
             $ref: "#/definitions/userResponse"
         '400':
           description: Validation errors
@@ -132,6 +109,31 @@ paths:
           description: Authentication error
           schema:
             $ref: "#/definitions/error"
+  # /me/login:
+  #   x-swagger-router-controller: me
+  #   post:
+  #     description: Login
+  #     security:
+  #       - AuthToken: []
+  #     operationId: meLogin
+  #     parameters:
+  #       - name: body
+  #         in: body
+  #         schema:
+  #           $ref: "#/definitions/userLogin"
+  #     responses:
+  #       '200':
+  #         description: OK
+  #         schema:
+  #           $ref: "#/definitions/loginToken"
+  #       '400':
+  #         description: Validation errors
+  #         schema:
+  #           $ref: '#/definitions/validationError'
+  #       '403':
+  #         description: Authentication error
+  #         schema:
+  #           $ref: "#/definitions/error"
 
   /me/datapoints:
     x-swagger-router-controller: me
@@ -184,6 +186,7 @@ paths:
       parameters:
         - in: header
           name: x-auth-token
+          description: instance_id
           type: string
           required: true
         - name: body
@@ -211,6 +214,7 @@ paths:
       parameters:
         - in: header
           name: x-auth-token
+          description: instance_id
           type: string
           required: true
         - name: body
@@ -358,7 +362,7 @@ paths:
           in: query
           type: string
           x-example: '2019-05-07T15:37:08.300Z'
-        - name: imei
+        - name: instance_id
           in: query
           type: string
           x-example: '123123131321'
@@ -409,24 +413,27 @@ definitions:
       last_name:
         type: string
         example: 'Doe'
-      imei:
+      instance_id:
         type: string
         example: '100000000000001'
-      password:
+      time_zone:
         type: string
-        example: 'strongPassord'
+        example: 'utc'
+      # password:
+      #   type: string
+      #   example: 'strongPassord'
       country_code:
         $ref: "#/definitions/countryCode"
 
   userLogin:
     type: object
     properties:
-      imei:
+      instance_id:
         type: string
         example: '100000000000001'
-      password:
-        type: string
-        example: 'strongPassord'     
+      # password:
+      #   type: string
+      #   example: 'strongPassord'     
   loginToken:
     type: object
     properties:
@@ -439,8 +446,8 @@ definitions:
     allOf:
       - $ref: "#/definitions/user"
     required:
-      - imei
-      - password
+      - instance_id
+      # - password
   userResponse:
     type: object
     allOf:
@@ -451,7 +458,7 @@ definitions:
             example: '5e130f33a45ff219588e8963'
           created_at:
             $ref: "#/definitions/date" 
-  datapoint:
+  _datapoint:
     type: object
     properties:
       time:
@@ -465,9 +472,6 @@ definitions:
       lon:
         type: number
         example: 25.123123
-      imei:
-        type: string
-        example: 100000000000001
       symptom_scores:
         type: object
         properties:
@@ -498,18 +502,25 @@ definitions:
           score:
             type: number
             example: 1
-          
+  datapoint:
+    type: object
+    allOf:
+      - $ref: "#/definitions/_datapoint"
+      - properties:
+          instance_id:
+            type: string
+            example: 100000000000001
+      
 
 
   datapointRequestBody:
     type: object
     allOf:
-      - $ref: "#/definitions/datapoint"
+      - $ref: "#/definitions/_datapoint"
     required:
       - lat
       - lon
       - time
-      - imei
   
   datapointBatchRequestBody:
     type: array

@@ -11,11 +11,28 @@ const buildQuery = ({ imei, time }) => ({
 module.exports = ({ mongoose }) => {
   const UserModel = mongoose.model('user')
   const DatapointModel = mongoose.model('datapoint')
+  const authenticate = async instance_id => {
+    // const user = await UserModel.findByToken
+    const user = await UserModel.findOne({ imei: instance_id })
+    if (!user) {
+      return Promise.reject(Object.assign(new Error('User was not found'), { statusCode: 404 }))
+    }
+    return user
+  }
+  const checkIfUserExists = async instance_id => {
+    const user = await UserModel.findOne({ imei: instance_id })
+    if (user) {
+      return Promise.reject(Object.assign(new Error(`User instance_id: ${instance_id} already taken`), { statusCode: 409 }))
+    }
+    return user
+  }
   return {
     mePostUser: async (req, res, next) => {
       try {
         const body = req.swagger.params.body.value
-        const user = await UserModel.create(body)
+        const { instance_id } = body
+        await checkIfUserExists(instance_id)
+        const user = await UserModel.create({ ...body, imei: body.instance_id })
         res.status(201).json(user.toJSON())
         next()
       } catch (e) {
@@ -25,7 +42,7 @@ module.exports = ({ mongoose }) => {
     meGet: async (req, res, next) => {
       try {
         const token = req.swagger.params['x-auth-token'].value
-        const user = await UserModel.findByToken(token)
+        const user = await authenticate(token)
         res.status(200).json(user.toJSON())
         next()
       } catch (e) {
@@ -46,7 +63,7 @@ module.exports = ({ mongoose }) => {
     mePut: async (req, res, next) => {
       try {
         const token = req.swagger.params['x-auth-token'].value
-        const { _id: id } = await UserModel.findByToken(token)
+        const { _id: id } = await authenticate(token)
         const body = req.swagger.params.body.value
         const user = await UserModel.update(id, body)
         res.status(201).json(user.toJSON())
@@ -58,7 +75,7 @@ module.exports = ({ mongoose }) => {
     mePostDatapoint: async (req, res, next) => {
       try {
         const token = req.swagger.params['x-auth-token'].value
-        const { imei } = await UserModel.findByToken(token)
+        const { imei } = await authenticate(token)
         const body = req.swagger.params.body.value
         const datapoint = await DatapointModel.create({ imei: imei || body.imei, ...body })
         res.status(201).json(datapoint.toJSON())
@@ -70,7 +87,7 @@ module.exports = ({ mongoose }) => {
     meBatchPostDatapoint: async (req, res, next) => {
       try {
         const token = req.swagger.params['x-auth-token'].value
-        const { imei } = await UserModel.findByToken(token)
+        const { imei } = await authenticate(token)
         const new_datapoints = req.swagger.params.body.value
         const datapoint = await DatapointModel.insertMany(new_datapoints.map(d => ({ ...d, imei })))
         res.status(201).json(datapoint.map(d => d.toJSON()))
@@ -82,7 +99,7 @@ module.exports = ({ mongoose }) => {
     meGetDatapoints: async (req, res, next) => {
       try {
         const token = req.swagger.params['x-auth-token'].value
-        const { imei } = await UserModel.findByToken(token)
+        const { imei } = await authenticate(token)
         const lat = parseFloat(req.swagger.params.lat.value)
         const lon = parseFloat(req.swagger.params.lon.value)
         const radius = parseFloat(req.swagger.params.radius.value)

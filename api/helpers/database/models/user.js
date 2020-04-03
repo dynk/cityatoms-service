@@ -12,10 +12,10 @@ const UserSchema = new Schema({
     required: true,
     lowercase: true,
   },
-  password: {
-    type: String,
-    required: true,
-  },
+  // password: {
+  //   type: String,
+  //   required: true,
+  // },
   is_confirmed: {
     type: Boolean,
     default: true,
@@ -29,6 +29,9 @@ const UserSchema = new Schema({
     lowercase: true,
   },
   country_code: {
+    type: String,
+  },
+  time_zone: {
     type: String,
   },
   tokens: [{
