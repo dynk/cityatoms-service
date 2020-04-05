@@ -159,6 +159,10 @@ paths:
           in: query
           type: string
           x-example: '2019-05-07T15:37:08.300Z'
+        - name: created_at
+          in: query
+          type: string
+          x-example: '2019-05-07T15:37:08.300Z'
       responses:
         '200':
           description: OK
@@ -355,6 +359,10 @@ paths:
           type: string
           x-example: '20'
         - name: time
+          in: query
+          type: string
+          x-example: '2019-05-07T15:37:08.300Z'
+        - name: created_at
           in: query
           type: string
           x-example: '2019-05-07T15:37:08.300Z'

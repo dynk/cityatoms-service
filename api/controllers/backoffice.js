@@ -1,12 +1,13 @@
 const moment = require('moment')
 
-const buildQuery = ({ imei, time }) => ({
+const buildQuery = ({ imei, time, created_at }) => ({
   ...(time ? {
     time: {
       $gt: moment(time).subtract(5, 'minute').toDate(),
       $lt: moment(time).add(5, 'minute').toDate(),
     } } : null),
   ...(imei ? { imei } : null),
+  ...(created_at ? { created_at: { $gte: created_at } } : null),
 })
 module.exports = ({ mongoose }) => {
   const UserModel = mongoose.model('user')
@@ -70,9 +71,10 @@ module.exports = ({ mongoose }) => {
         const lat = parseFloat(req.swagger.params.lat.value)
         const lon = parseFloat(req.swagger.params.lon.value)
         const radius = parseFloat(req.swagger.params.radius.value)
+        const created_at = req.swagger.params.created_at.value
         const time = req.swagger.params.time.value
-        const imei = req.swagger.params.imei.value
-        const query = buildQuery({ time, imei })
+        const imei = req.swagger.params.instance_id.value
+        const query = buildQuery({ imei, time, created_at })
         let datapoints
         if (lat && lon) {
           datapoints = await DatapointModel.aggregate([

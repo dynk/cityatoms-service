@@ -1,12 +1,13 @@
 const moment = require('moment')
 
-const buildQuery = ({ imei, time }) => ({
+const buildQuery = ({ imei, time, created_at }) => ({
   ...(time ? {
     time: {
       $gt: moment(time).subtract(5, 'minute').toDate(),
       $lt: moment(time).add(5, 'minute').toDate(),
     } } : null),
   imei,
+  ...(created_at ? { created_at: { $gte: created_at } } : null),
 })
 module.exports = ({ mongoose }) => {
   const UserModel = mongoose.model('user')
@@ -49,17 +50,17 @@ module.exports = ({ mongoose }) => {
         next(e)
       }
     },
-    meLogin: async (req, res, next) => {
-      try {
-        const { imei, password } = req.swagger.params.body.value
-        const user = await UserModel.findByCredentials(imei, password)
-        const token = await user.generateAuthToken()
-        res.status(200).json({ token })
-        next()
-      } catch (e) {
-        next(e)
-      }
-    },
+    // meLogin: async (req, res, next) => {
+    //   try {
+    //     const { imei, password } = req.swagger.params.body.value
+    //     const user = await UserModel.findByCredentials(imei, password)
+    //     const token = await user.generateAuthToken()
+    //     res.status(200).json({ token })
+    //     next()
+    //   } catch (e) {
+    //     next(e)
+    //   }
+    // },
     mePut: async (req, res, next) => {
       try {
         const token = req.swagger.params['x-auth-token'].value
@@ -104,7 +105,8 @@ module.exports = ({ mongoose }) => {
         const lon = parseFloat(req.swagger.params.lon.value)
         const radius = parseFloat(req.swagger.params.radius.value)
         const time = req.swagger.params.time.value
-        const query = buildQuery({ time, imei })
+        const created_at = req.swagger.params.created_at.value
+        const query = buildQuery({ time, imei, created_at })
         let datapoints
         if (lat && lon) {
           datapoints = await DatapointModel.aggregate([
