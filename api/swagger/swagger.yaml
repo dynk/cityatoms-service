@@ -36,10 +36,6 @@ paths:
         - AuthToken: []
       operationId: meGet
       parameters:
-        - name: body
-          in: body
-          schema:
-            $ref: "#/definitions/userRequestBody"
         - in: header
           name: x-auth-token
           description: instance_id
