@@ -63,11 +63,11 @@ module.exports = ({ mongoose }) => {
     // },
     mePut: async (req, res, next) => {
       try {
-        const token = req.swagger.params['x-auth-token'].value
-        const { _id: id } = await authenticate(token)
+        const instance_id = req.swagger.params['x-auth-token'].value
+        const { _id } = await authenticate(instance_id)
         const body = req.swagger.params.body.value
-        const user = await UserModel.update(id, body)
-        res.status(201).json(user.toJSON())
+        await UserModel.update({ _id }, { ...body, imei: instance_id })
+        res.status(200).json({ id: _id })
         next()
       } catch (e) {
         next(e)

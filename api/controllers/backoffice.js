@@ -16,7 +16,7 @@ module.exports = ({ mongoose }) => {
     backofficePostUser: async (req, res, next) => {
       try {
         const body = req.swagger.params.body.value
-        const user = await UserModel.create(body)
+        const user = await UserModel.create({ ...body, imei: body.instance_id })
         res.status(201).json(user.toJSON())
         next()
       } catch (e) {
@@ -45,8 +45,9 @@ module.exports = ({ mongoose }) => {
     backofficePutUser: async (req, res, next) => {
       try {
         const body = req.swagger.params.body.value
-        const user = await UserModel.update(body)
-        res.status(201).json(user.toJSON())
+        const _id = req.swagger.params.userId.value
+        await UserModel.update({ _id }, { ...body, imei: body.instance_id })
+        res.status(200).json({ id: _id })
         next()
       } catch (e) {
         next(e)
@@ -59,7 +60,7 @@ module.exports = ({ mongoose }) => {
           type: 'Point',
           coordinates: [body.lat, body.lon],
         }
-        const datapoint = await DatapointModel.create({ ...body, location })
+        const datapoint = await DatapointModel.create({ ...body, imei: body.instance_id, location })
         res.status(201).json(datapoint.toJSON())
         next()
       } catch (e) {

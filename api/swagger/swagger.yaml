@@ -241,7 +241,7 @@ paths:
         - BackofficeAuthToken: []
       operationId: backofficeGetUsers
       responses:
-        '201':
+        '200':
           description: OK
           schema:
             type: array
@@ -394,7 +394,7 @@ paths:
         - name: body
           in: body
           schema:
-            $ref: "#/definitions/datapointRequestBody"
+            $ref: "#/definitions/datapointBackofficeRequestBody"
       responses:
         '201':
           description: OK
@@ -408,6 +408,13 @@ paths:
             $ref: "#/definitions/error"
  
 definitions:
+  userRequestBody:
+    type: object
+    allOf:
+      - $ref: "#/definitions/user"
+    required:
+      - instance_id
+      # - password
   user:
     type: object
     properties:
@@ -445,13 +452,6 @@ definitions:
         type: string
         example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTgyMTY4YjlkYjBkYTEyYmRiOTQxMGQiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg1NTkzMzQ1fQ.RM7UvjXzeW40oAHeygdRn6qBDvWgFcdUGyNiKOKz0Ow'
 
-  userRequestBody:
-    type: object
-    allOf:
-      - $ref: "#/definitions/user"
-    required:
-      - instance_id
-      # - password
   userResponse:
     type: object
     allOf:
@@ -525,6 +525,20 @@ definitions:
       - lat
       - lon
       - time
+
+  datapointBackofficeRequestBody:
+    type: object
+    allOf:
+      - $ref: "#/definitions/_datapoint"
+      - properties:
+          instance_id:
+            type: string
+            example: 123123
+    required:
+      - lat
+      - lon
+      - time
+      - instance_id
   
   datapointBatchRequestBody:
     type: array
