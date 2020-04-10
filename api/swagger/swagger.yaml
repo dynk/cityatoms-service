@@ -232,6 +232,21 @@ paths:
           description: Authentication error
           schema:
             $ref: "#/definitions/error"
+  /me/count:
+    x-swagger-router-controller: me
+    get:
+      description: get count
+      security:
+        - AuthToken: []
+      operationId: meGetCount
+      parameters: 
+        - in: header
+          name: x-auth-token
+          description: instance_id
+          type: string
+      responses:
+        '200': 
+          description: OK 
 
   /backoffice/users:
     x-swagger-router-controller: backoffice

@@ -1,5 +1,5 @@
 const moment = require('moment')
-
+const config = require('../common/config')
 const buildQuery = ({ imei, time, created_at }) => ({
   ...(time ? {
     time: {
@@ -9,7 +9,7 @@ const buildQuery = ({ imei, time, created_at }) => ({
   imei,
   ...(created_at ? { created_at: { $gte: created_at } } : null),
 })
-module.exports = ({ mongoose }) => {
+module.exports = ({ mongoose, Pool }) => {
   const UserModel = mongoose.model('user')
   const DatapointModel = mongoose.model('datapoint')
   const authenticate = async instance_id => {
@@ -130,5 +130,43 @@ module.exports = ({ mongoose }) => {
         next(e)
       }
     },
+    meGetCount: async (req, res, next) => {
+      try {
+        const token = req.swagger.params['x-auth-token'].value
+        const {imei} = await authenticate(token)
+       
+        const pool = new Pool({
+          user: config.POSTGRES_USER,
+          host: config.POSTGRES_URI,
+          database: config.POSTGRES_DB_NAME,
+          password: config.POSTGRES_PWD,
+          port: 5432,
+        })
+        const tableName = `imei${imei}`
+        pool.query(`SELECT * FROM "${tableName}"`, (err, queryRes) => {
+          
+          if(err) {
+            if( err.code == '42P01') {
+              // Error code 42P01 means that table doesnot exist
+              // It will give an error in the scenario when user has not come into contact w/anyone and as such that table won't exist
+              // May change in future version if Python script is modified
+              res.status(200).json({data: []})
+              
+            } else {
+              next(err)
+            }
+          }
+          else {
+            res.status(200).json({ data: queryRes.rows }) 
+          }
+          next()
+        })
+        
+        res.status(200).json(data.rows)
+        next()
+      } catch(e) {
+        next(e)
+      }
+    }
   }
 }

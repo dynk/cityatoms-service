@@ -6,6 +6,11 @@ const config = cleanEnv(process.env, {
   BACKOFFICE_AUTH_TOKEN: str(),
   MONGO_URI: str(),
   JWT_SECRET: str(),
+  POSTGRES_URI: str(),
+  POSTGRES_DB_NAME: str(),
+  POSTGRES_PWD: str(),
+  POSTGRES_USER: str()
+
 }, { strict: true })
 
 Object.assign(process.env, config)

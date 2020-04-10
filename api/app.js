@@ -1,6 +1,7 @@
 const SwaggerExpress = require('swagger-express-mw')
 const App = require('express')
 const mongoose = require('mongoose')
+const Pool = require('pg').Pool
 const config = require('./common/config')
 const logger = require('./common/logger')
 require('./helpers/database/models')
@@ -12,7 +13,7 @@ const linkSwagger = () => new Promise((accept, reject) => {
   const appConfig = {
     appRoot: `${__dirname}/../`,
     swaggerSecurityHandlers: SecurityHandlers(),
-    dependencies: { mongoose },
+    dependencies: { mongoose, Pool  },
   }
   SwaggerExpress.create(appConfig, (err, swaggerExpress) => {
     if (err) {
