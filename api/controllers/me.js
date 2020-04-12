@@ -1,5 +1,6 @@
 const moment = require('moment')
-const config = require('../common/config')
+const pool = require('../helpers/database/postgres')
+
 const buildQuery = ({ imei, time, created_at }) => ({
   ...(time ? {
     time: {
@@ -134,14 +135,7 @@ module.exports = ({ mongoose, Pool }) => {
       try {
         const token = req.swagger.params['x-auth-token'].value
         const {imei} = await authenticate(token)
-       
-        const pool = new Pool({
-          user: config.POSTGRES_USER,
-          host: config.POSTGRES_URI,
-          database: config.POSTGRES_DB_NAME,
-          password: config.POSTGRES_PWD,
-          port: 5432,
-        })
+      
         const tableName = `imei${imei}`
         pool.query(`SELECT * FROM "${tableName}"`, (err, queryRes) => {
           
@@ -162,8 +156,7 @@ module.exports = ({ mongoose, Pool }) => {
           next()
         })
         
-        res.status(200).json(data.rows)
-        next()
+        
       } catch(e) {
         next(e)
       }

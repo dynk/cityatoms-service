@@ -246,7 +246,15 @@ paths:
           type: string
       responses:
         '200': 
-          description: OK 
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/count"
+        '403':
+          description: Authentication error
+          schema:
+            $ref: "#/definitions/error"
 
   /backoffice/users:
     x-swagger-router-controller: backoffice
@@ -476,7 +484,41 @@ definitions:
             type: string
             example: '5e130f33a45ff219588e8963'
           created_at:
-            $ref: "#/definitions/date" 
+            $ref: "#/definitions/date"
+
+  count:
+    type: object
+    properties:
+      IMEI:
+        type: number
+        example: 100000000000001
+      time:
+        type: number
+        example: 1584669004 
+      alert:
+        type: number
+        example: 0
+      danger: 
+        type: number
+        example: 0
+      alert_score:
+        type: number
+        example: 0
+      danger_score:
+        type: number
+        example: 0
+      lat:
+        type: number
+        example: 29.029103
+      lon:
+        type: number
+        example: 12.345678
+      contact_score:
+        type: number
+        example: 100
+
+
+
   _datapoint:
     type: object
     properties:
