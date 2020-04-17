@@ -489,7 +489,7 @@ definitions:
   count:
     type: object
     properties:
-      IMEI:
+      instance_id:
         type: number
         example: 100000000000001
       time:

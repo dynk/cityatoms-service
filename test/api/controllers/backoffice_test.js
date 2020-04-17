@@ -12,7 +12,7 @@ after(() => end())
 const BACKOFFICE_HEADER = 'x-backoffice-auth-token'
 const BACKOFFICE_TOKEN = 'test'
 const defaultDatapoint = {
-  imei: '11111',
+  instance_id: '11111',
   lat: 20,
   lon: 20,
   time: '2019-05-07T15:22:08.300Z',

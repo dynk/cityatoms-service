@@ -1,12 +1,12 @@
 const moment = require('moment')
 
-const buildQuery = ({ imei, time, created_at }) => ({
+const buildQuery = ({ instance_id, time, created_at }) => ({
   ...(time ? {
     time: {
       $gt: moment(time).subtract(5, 'minute').toDate(),
       $lt: moment(time).add(5, 'minute').toDate(),
     } } : null),
-  ...(imei ? { imei } : null),
+  ...(instance_id ? { instance_id } : null),
   ...(created_at ? { created_at: { $gte: created_at } } : null),
 })
 module.exports = ({ mongoose }) => {
@@ -16,7 +16,7 @@ module.exports = ({ mongoose }) => {
     backofficePostUser: async (req, res, next) => {
       try {
         const body = req.swagger.params.body.value
-        const user = await UserModel.create({ ...body, imei: body.instance_id })
+        const user = await UserModel.create({ ...body, instance_id: body.instance_id })
         res.status(201).json(user.toJSON())
         next()
       } catch (e) {
@@ -46,7 +46,7 @@ module.exports = ({ mongoose }) => {
       try {
         const body = req.swagger.params.body.value
         const _id = req.swagger.params.userId.value
-        await UserModel.update({ _id }, { ...body, imei: body.instance_id })
+        await UserModel.update({ _id }, { ...body, instance_id: body.instance_id })
         res.status(200).json({ id: _id })
         next()
       } catch (e) {
@@ -60,7 +60,7 @@ module.exports = ({ mongoose }) => {
           type: 'Point',
           coordinates: [body.lat, body.lon],
         }
-        const datapoint = await DatapointModel.create({ ...body, imei: body.instance_id, location })
+        const datapoint = await DatapointModel.create({ ...body, instance_id: body.instance_id, location })
         res.status(201).json(datapoint.toJSON())
         next()
       } catch (e) {
@@ -74,8 +74,8 @@ module.exports = ({ mongoose }) => {
         const radius = parseFloat(req.swagger.params.radius.value)
         const created_at = req.swagger.params.created_at.value
         const time = req.swagger.params.time.value
-        const imei = req.swagger.params.instance_id.value
-        const query = buildQuery({ imei, time, created_at })
+        const instance_id = req.swagger.params.instance_id.value
+        const query = buildQuery({ instance_id, time, created_at })
         let datapoints
         if (lat && lon) {
           datapoints = await DatapointModel.aggregate([

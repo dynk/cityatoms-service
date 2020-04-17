@@ -39,7 +39,7 @@ const run = async () => {
   try {
     const rawPoints = await getPointsCSV(CSV_FILE_PATH)
     const points = rawPoints.map(({
-      imei,
+      instance_id,
       lat,
       lon,
       time: time_utc,
@@ -54,7 +54,7 @@ const run = async () => {
       hospital,
       score,
     }) => ({
-      imei,
+      instance_id,
       lat: parseFloat(lat),
       lon: parseFloat(lon),
       time: moment(time).toISOString(),

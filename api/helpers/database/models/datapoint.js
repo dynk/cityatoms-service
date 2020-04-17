@@ -16,7 +16,7 @@ const pointSchema = new mongoose.Schema({
 })
 
 const DatapointSchema = new Schema({
-  imei: {
+  instance_id: {
     type: String,
     required: true,
   },
