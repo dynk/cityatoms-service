@@ -1,7 +1,7 @@
 swagger: "2.0"
 
 info:
-  version: '1'
+  version: "1"
   title: cityatoms-service
 
 host: localhost:3000
@@ -12,7 +12,7 @@ schemes:
 
 consumes:
   - application/json
-  
+
 securityDefinitions:
   BackofficeAuthToken:
     type: apiKey
@@ -42,15 +42,15 @@ paths:
           type: string
           required: true
       responses:
-        '200':
+        "200":
           description: OK
           schema:
             $ref: "#/definitions/userResponse"
-        '400':
+        "400":
           description: Validation errors
           schema:
-            $ref: '#/definitions/validationError'
-        '403':
+            $ref: "#/definitions/validationError"
+        "403":
           description: Authentication error
           schema:
             $ref: "#/definitions/error"
@@ -70,15 +70,15 @@ paths:
           schema:
             $ref: "#/definitions/userRequestBody"
       responses:
-        '200':
+        "200":
           description: OK
           schema:
             $ref: "#/definitions/userResponse"
-        '400':
+        "400":
           description: Validation errors
           schema:
-            $ref: '#/definitions/validationError'
-        '403':
+            $ref: "#/definitions/validationError"
+        "403":
           description: Authentication error
           schema:
             $ref: "#/definitions/error"
@@ -93,15 +93,15 @@ paths:
           schema:
             $ref: "#/definitions/userRequestBody"
       responses:
-        '201':
+        "201":
           description: OK
           schema:
             $ref: "#/definitions/userResponse"
-        '400':
+        "400":
           description: Validation errors
           schema:
-            $ref: '#/definitions/validationError'
-        '403':
+            $ref: "#/definitions/validationError"
+        "403":
           description: Authentication error
           schema:
             $ref: "#/definitions/error"
@@ -146,35 +146,35 @@ paths:
         - name: lat
           in: query
           type: string
-          x-example: '20'
+          x-example: "20"
         - name: lon
           in: query
           type: string
-          x-example: '20'
+          x-example: "20"
         - name: radius
           in: query
           type: string
-          x-example: '20'
+          x-example: "20"
         - name: time
           in: query
           type: string
-          x-example: '2019-05-07T15:37:08.300Z'
+          x-example: "2019-05-07T15:37:08.300Z"
         - name: created_at
           in: query
           type: string
-          x-example: '2019-05-07T15:37:08.300Z'
+          x-example: "2019-05-07T15:37:08.300Z"
       responses:
-        '200':
+        "200":
           description: OK
           schema:
             type: array
             items:
               $ref: "#/definitions/datapoint"
-        '400':
+        "400":
           description: Validation errors
           schema:
-            $ref: '#/definitions/validationError'
-        '403':
+            $ref: "#/definitions/validationError"
+        "403":
           description: Authentication error
           schema:
             $ref: "#/definitions/error"
@@ -194,13 +194,13 @@ paths:
           schema:
             $ref: "#/definitions/datapointRequestBody"
       responses:
-        '201':
+        "201":
           description: OK
-        '400':
+        "400":
           description: Validation errors
           schema:
-            $ref: '#/definitions/validationError'
-        '403':
+            $ref: "#/definitions/validationError"
+        "403":
           description: Authentication error
           schema:
             $ref: "#/definitions/error"
@@ -222,13 +222,13 @@ paths:
           schema:
             $ref: "#/definitions/datapointBatchRequestBody"
       responses:
-        '201':
+        "201":
           description: OK
-        '400':
+        "400":
           description: Validation errors
           schema:
-            $ref: '#/definitions/validationError'
-        '403':
+            $ref: "#/definitions/validationError"
+        "403":
           description: Authentication error
           schema:
             $ref: "#/definitions/error"
@@ -239,19 +239,19 @@ paths:
       security:
         - AuthToken: []
       operationId: meGetCount
-      parameters: 
+      parameters:
         - in: header
           name: x-auth-token
           description: instance_id
           type: string
       responses:
-        '200': 
+        "200":
           description: OK
           schema:
             type: array
             items:
               $ref: "#/definitions/count"
-        '403':
+        "403":
           description: Authentication error
           schema:
             $ref: "#/definitions/error"
@@ -264,17 +264,17 @@ paths:
         - BackofficeAuthToken: []
       operationId: backofficeGetUsers
       responses:
-        '200':
+        "200":
           description: OK
           schema:
             type: array
             items:
               $ref: "#/definitions/userResponse"
-        '400':
+        "400":
           description: Validation errors
           schema:
-            $ref: '#/definitions/validationError'
-        '403':
+            $ref: "#/definitions/validationError"
+        "403":
           description: Authentication error
           schema:
             $ref: "#/definitions/error"
@@ -289,19 +289,19 @@ paths:
           schema:
             $ref: "#/definitions/userRequestBody"
       responses:
-        '201':
+        "201":
           description: OK
           schema:
             $ref: "#/definitions/userResponse"
-        '400':
+        "400":
           description: Validation errors
           schema:
-            $ref: '#/definitions/validationError'
-        '403':
+            $ref: "#/definitions/validationError"
+        "403":
           description: Authentication error
           schema:
             $ref: "#/definitions/error"
-            
+
   /backoffice/users/{userId}:
     x-swagger-router-controller: backoffice
     get:
@@ -312,21 +312,21 @@ paths:
       parameters:
         - name: userId
           in: path
-          description: 'ID of the user'
+          description: "ID of the user"
           required: true
-          x-example: 'USERID'
+          x-example: "USERID"
           type: string
-          pattern: '^[0-9a-fA-F]{24}$'
+          pattern: "^[0-9a-fA-F]{24}$"
       responses:
-        '200':
+        "200":
           description: OK
           schema:
             $ref: "#/definitions/userResponse"
-        '400':
+        "400":
           description: Validation errors
           schema:
-            $ref: '#/definitions/validationError'
-        '403':
+            $ref: "#/definitions/validationError"
+        "403":
           description: Authentication error
           schema:
             $ref: "#/definitions/error"
@@ -342,21 +342,21 @@ paths:
             $ref: "#/definitions/userRequestBody"
         - name: userId
           in: path
-          description: 'ID of the user'
+          description: "ID of the user"
           required: true
-          x-example: 'USERID'
+          x-example: "USERID"
           type: string
-          pattern: '^[0-9a-fA-F]{24}$'
+          pattern: "^[0-9a-fA-F]{24}$"
       responses:
-        '200':
+        "200":
           description: OK
           schema:
             $ref: "#/definitions/userResponse"
-        '400':
+        "400":
           description: Validation errors
           schema:
-            $ref: '#/definitions/validationError'
-        '403':
+            $ref: "#/definitions/validationError"
+        "403":
           description: Authentication error
           schema:
             $ref: "#/definitions/error"
@@ -372,39 +372,39 @@ paths:
         - name: lat
           in: query
           type: string
-          x-example: '20'
+          x-example: "20"
         - name: lon
           in: query
           type: string
-          x-example: '20'
+          x-example: "20"
         - name: radius
           in: query
           type: string
-          x-example: '20'
+          x-example: "20"
         - name: time
           in: query
           type: string
-          x-example: '2019-05-07T15:37:08.300Z'
+          x-example: "2019-05-07T15:37:08.300Z"
         - name: created_at
           in: query
           type: string
-          x-example: '2019-05-07T15:37:08.300Z'
+          x-example: "2019-05-07T15:37:08.300Z"
         - name: instance_id
           in: query
           type: string
-          x-example: '123123131321'
+          x-example: "123123131321"
       responses:
-        '200':
+        "200":
           description: OK
           schema:
             type: array
             items:
               $ref: "#/definitions/datapoint"
-        '400':
+        "400":
           description: Validation errors
           schema:
-            $ref: '#/definitions/validationError'
-        '403':
+            $ref: "#/definitions/validationError"
+        "403":
           description: Authentication error
           schema:
             $ref: "#/definitions/error"
@@ -419,17 +419,17 @@ paths:
           schema:
             $ref: "#/definitions/datapointBackofficeRequestBody"
       responses:
-        '201':
+        "201":
           description: OK
-        '400':
+        "400":
           description: Validation errors
           schema:
-            $ref: '#/definitions/validationError'
-        '403':
+            $ref: "#/definitions/validationError"
+        "403":
           description: Authentication error
           schema:
             $ref: "#/definitions/error"
- 
+
 definitions:
   userRequestBody:
     type: object
@@ -443,16 +443,16 @@ definitions:
     properties:
       first_name:
         type: string
-        example: 'John'
+        example: "John"
       last_name:
         type: string
-        example: 'Doe'
+        example: "Doe"
       instance_id:
         type: string
-        example: '100000000000001'
+        example: "100000000000001"
       time_zone:
         type: string
-        example: 'utc'
+        example: "utc"
       # password:
       #   type: string
       #   example: 'strongPassord'
@@ -464,16 +464,16 @@ definitions:
     properties:
       instance_id:
         type: string
-        example: '100000000000001'
+        example: "100000000000001"
       # password:
       #   type: string
-      #   example: 'strongPassord'     
+      #   example: 'strongPassord'
   loginToken:
     type: object
     properties:
       token:
         type: string
-        example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTgyMTY4YjlkYjBkYTEyYmRiOTQxMGQiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg1NTkzMzQ1fQ.RM7UvjXzeW40oAHeygdRn6qBDvWgFcdUGyNiKOKz0Ow'
+        example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTgyMTY4YjlkYjBkYTEyYmRiOTQxMGQiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg1NTkzMzQ1fQ.RM7UvjXzeW40oAHeygdRn6qBDvWgFcdUGyNiKOKz0Ow"
 
   userResponse:
     type: object
@@ -482,7 +482,7 @@ definitions:
       - properties:
           id:
             type: string
-            example: '5e130f33a45ff219588e8963'
+            example: "5e130f33a45ff219588e8963"
           created_at:
             $ref: "#/definitions/date"
 
@@ -494,11 +494,11 @@ definitions:
         example: 100000000000001
       time:
         type: number
-        example: 1584669004 
+        example: 1584669004
       alert:
         type: number
         example: 0
-      danger: 
+      danger:
         type: number
         example: 0
       alert_score:
@@ -516,8 +516,6 @@ definitions:
       contact_score:
         type: number
         example: 100
-
-
 
   _datapoint:
     type: object
@@ -571,8 +569,6 @@ definitions:
           instance_id:
             type: string
             example: 100000000000001
-      
-
 
   datapointRequestBody:
     type: object
@@ -596,21 +592,24 @@ definitions:
       - lon
       - time
       - instance_id
-  
+
   datapointBatchRequestBody:
-    type: array
-    items:
-      $ref: "#/definitions/datapoint"
+    type: object
+    properties:
+      datapoints:
+        type: array
+        items:
+          $ref: "#/definitions/datapoint"
 
   countryCode:
     type: string
-    pattern: '^([a-zA-Z]{2})$'
-    example: 'DE'
+    pattern: "^([a-zA-Z]{2})$"
+    example: "DE"
 
   date:
     type: string
     format: date-time
-    example: '2020-01-01T00:00:00.123Z'
+    example: "2020-01-01T00:00:00.123Z"
 
   error:
     type: object
@@ -657,4 +656,3 @@ definitions:
           warnings:
             $ref: "#/definitions/validationMessage"
     additionalProperties: false
-
