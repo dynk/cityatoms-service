@@ -18,7 +18,7 @@
     "url": "https://github.com/dynk/cityatoms-service"
   },
   "dependencies": {
-    "async": "^3.2.0",
+    "async": "^3.2.2",
     "bcryptjs": "^2.4.3",
     "clean-deep": "^3.3.0",
     "dotenv": "^8.2.0",
